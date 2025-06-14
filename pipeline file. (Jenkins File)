@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_DIR = '/var/lib/jenkins/workspace/nextjs-deploy'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/tinabhatnagar27/nextjs-ec2-app.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                cd $APP_DIR
+                npm install
+                '''
+            }
+        }
+
+        stage('Build App') {
+            steps {
+                sh '''
+                cd $APP_DIR
+                npm run build
+                '''
+            }
+        }
+    }
+}
